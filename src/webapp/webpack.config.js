@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     context: __dirname,
     devtool: 'cheap-module-source-map',
-    entry: "./src/webapp/react/index.js",
+    entry: "./react/index.js",
     module: {
         loaders: [
             {
@@ -19,12 +19,12 @@ module.exports = {
         ]
     },
     output: {
-        path: __dirname + "/src/webapp//build",
+        path: "../server/public",
         filename: "bundle.js"
     },
     plugins: debug ? [] : [
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: true })
+        new webpack.optimize.UglifyJsPlugin({mangle: false, sourcemap: true})
     ]
 };
