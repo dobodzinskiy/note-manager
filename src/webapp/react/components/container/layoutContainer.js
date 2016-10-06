@@ -1,16 +1,16 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import * as directoriesActions from '../../actions/directoriesActions';
 
-import Directories from '../view/directoriesView';
+import Notices from '../view/layoutView';
 
 function mapStateToProps(store) {
     return {
-        directoriesState : store.directoriesState
+        directoriesState: store.directoriesState
     };
 }
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(directoriesActions, dispatch);
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Directories);
+export default connect(mapStateToProps, mapDispatchToProps)(Notices);

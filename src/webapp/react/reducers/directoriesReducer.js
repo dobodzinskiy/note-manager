@@ -2,6 +2,7 @@ import * as types from '../actions/actionTypes';
 
 const initialState = {
     directories: [],
+    activeDirectory: null,
     isDeleteActive: false,
     isEditActive: false
 };

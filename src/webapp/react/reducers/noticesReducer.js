@@ -2,6 +2,7 @@ import * as types from '../actions/actionTypes';
 
 const initialState = {
     notices: [],
+    activeNotice: null,
     isChangeActive: false,
     isDeleteActive: false
 };
