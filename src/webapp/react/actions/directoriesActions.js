@@ -53,3 +53,29 @@ export function deleteDirectory(directory) {
     }
 
 }
+
+export function focusDirectory(directory) {
+    return (dispatch) => {
+        dispatch({
+            type: types.FOCUS_DIRECTORY,
+            directory: directory
+        })
+    }
+}
+
+export function openAddModal() {
+    return (dispatch) => {
+        dispatch({
+            type: types.SHOW_ADD_DIRECTORY_MODAL,
+        })
+    }
+}
+
+export function openDirectory(directory) {
+    return (dispatch) => {
+        dispatch({
+            type: types.OPEN_DIRECTORY,
+            directory: directory
+        })
+    }
+}

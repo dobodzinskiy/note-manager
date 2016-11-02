@@ -49,3 +49,29 @@ export function deleteNotice(notice) {
         )
     }
 }
+
+export function focusNotice(notice) {
+    return (dispatch) => {
+        dispatch({
+            type: types.FOCUS_NOTICE,
+            notice
+        })
+    }
+}
+
+export function openAddNoticeModal() {
+    return (dispatch) => {
+        dispatch({
+            type: types.OPEN_ADD_NOTICE_MODAL,
+        })
+    }
+}
+
+export function openNotice(notice) {
+    return (dispatch) => {
+        dispatch({
+            type: types.OPEN_NOTICE,
+            notice
+        })
+    }
+}

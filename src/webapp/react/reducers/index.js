@@ -2,7 +2,7 @@ import directoriesReducer from './directoriesReducer';
 import noticesReducer from './noticesReducer';
 import {combineReducers} from 'redux';
 
-module.exports = combineReducers({
+export default combineReducers({
     directoriesState: directoriesReducer,
     noticesState: noticesReducer
 });

@@ -18,8 +18,8 @@ export function getDirectories() {
 export function postDirectory(directory) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/directories',
-            data: directory,
+            url: '/directories/',
+            data: JSON.stringify(directory),
             type: 'POST',
             headers: {
                 "accept": "application/json",
