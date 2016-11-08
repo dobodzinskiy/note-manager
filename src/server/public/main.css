@@ -1,18 +1,31 @@
 .dir {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Chrome/Safari/Opera */
-    -khtml-user-select: none; /* Konqueror */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
+     -webkit-touch-callout: none; /* iOS Safari */
+     -webkit-user-select: none; /* Chrome/Safari/Opera */
+     -khtml-user-select: none; /* Konqueror */
+     -moz-user-select: none; /* Firefox */
+     -ms-user-select: none; /* Internet Explorer/Edge */
+     user-select: none; /* Non-prefixed version, currently
                                   not supported by any browser */
-    /*height: 25px;*/
-    cursor: hand;
-}
-.focused {
-    background: whitesmoke;
-    border-radius: 4px;
+     /*height: 25px;*/
+     cursor: hand;
+ }
+.dirFocused {
+    color: #2b669a;
 }
 ul {
     list-style-type: none;
+}
+.form-input-sm {
+    height: 25px;
+    width: 140px !important;
+}
+
+.notice:hover {
+    background: whitesmoke;
+    border-radius: 5px;
+}
+
+.noticeFocused {
+    background: antiquewhite;
+    border-radius: 5px;
 }

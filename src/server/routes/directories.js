@@ -9,7 +9,6 @@ router
         res.send(store.directories)
     })
     .post('/', function (req, res) {
-        console.log('post directory called');
         var directory = _.pick(req.body, [
                 'parentId',
                 'name'

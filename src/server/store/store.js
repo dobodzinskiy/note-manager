@@ -24,6 +24,7 @@ var store = {
     ],
     notices: [
         {
+            id: 1,
             directoryId: 1,
             title: 'Notice1',
             description: 'Just Example',
@@ -31,6 +32,7 @@ var store = {
             position: 1
         },
         {
+            id: 2,
             directoryId: 1,
             title: 'Notice2',
             description: 'Just second Example',

@@ -38,6 +38,23 @@ export function changeNotice(notice) {
     }
 }
 
+export function editNotice(notice) {
+    return (dispatch) => {
+        dispatch({
+            type: types.EDIT_NOTICE,
+            notice
+        })
+    }
+}
+
+export function cancelEditNotice() {
+    return (dispatch) => {
+        dispatch({
+            type: types.CANCEL_EDIT_NOTICE
+        })
+    }
+}
+
 export function deleteNotice(notice) {
     return (dispatch) => {
         return api.deleteNotice(notice).then(
@@ -67,11 +84,10 @@ export function openAddNoticeModal() {
     }
 }
 
-export function openNotice(notice) {
-    return (dispatch) => {
-        dispatch({
-            type: types.OPEN_NOTICE,
-            notice
-        })
-    }
-}
+// export function openNotice() {
+//     return (dispatch) => {
+//         dispatch({
+//             type: types.OPEN_NOTICE,
+//         })
+//     }
+// }

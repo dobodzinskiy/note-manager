@@ -1,6 +1,7 @@
 import * as types from './actionTypes';
 import * as api from '../api/directoriesApi';
-import { showErrors } from './errorActions';
+import {showErrors} from './errorActions';
+import {hashHistory} from 'react-router';
 
 export function getDirectories() {
     return (dispatch) => {
@@ -26,6 +27,22 @@ export function createDirectory(directory) {
     }
 }
 
+export function editDirectory(directory) {
+    return (dispatch) => {
+        dispatch({
+            type: types.EDIT_DIRECTORY,
+            directory
+        })
+    }
+}
+
+export function cancelEditDirectory() {
+    return (dispatch) => {
+        dispatch({
+            type: types.CANCEL_EDIT_DIRECTORY
+        })
+    }
+}
 export function changeDirectory(directory) {
     return (dispatch) => {
         return api.putDirectory(directory).then(
@@ -76,6 +93,7 @@ export function openDirectory(directory) {
         dispatch({
             type: types.OPEN_DIRECTORY,
             directory: directory
-        })
+        });
+        hashHistory.replace('/folder/' + directory.id);
     }
 }

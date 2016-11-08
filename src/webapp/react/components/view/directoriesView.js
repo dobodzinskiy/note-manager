@@ -48,6 +48,7 @@ class AddModal extends React.Component {
 }
 export default class Directories extends React.Component {
 
+
     renderDirectory(directory) {
         var children;
         var childrenNodes = this.getChildren(directory);
@@ -62,18 +63,45 @@ export default class Directories extends React.Component {
                 )
             })
         }
-        var dirName =
-            <div>
+        var dirName = this.props.directoriesState.editableDirectory.id == directory.id ?
+            (
+                <div>
+                    <form class="form-inline" style={{margin: 0}}>
+                        <div class="form-group">
+                            <label for="folder"><span class="glyphicon glyphicon-folder-close btn-lg"/></label>
+                            <input type="text" class="form-control form-input-sm" id="folder" name="folder"
+                                   placeholder={this.props.directoriesState.editableDirectory.name}/>
+                            &nbsp;<span class="glyphicon glyphicon-ok"
+                                        onClick={() => {
+                                            this.props.changeDirectory({
+                                                id: directory.id,
+                                                parentId: directory.parentId,
+                                                name: $("#folder").val()
+                                            })
+                                        }
+                                        }/>
+                            &nbsp;<span class="glyphicon glyphicon-remove"
+                                        onClick={() => {
+                                            this.props.cancelEditDirectory()
+                                        }
+                                        }/>
+                        </div>
+                    </form>
+                </div>
+            ) :
+            (
+                <div>
                 <span
                     class={ directory.isOpen ? "glyphicon glyphicon-folder-open btn-lg" : "glyphicon glyphicon-folder-close btn-lg"}/>
-                {
-                    directory.name
-                }
-            </div>;
+                    {
+                        directory.name
+                    }
+                </div>
+            );
 
         var style =
             this.props.directoriesState.activeDirectory && directory.id == this.props.directoriesState.activeDirectory.id ?
-                'dir focused' :
+                'dir dirFocused' :
                 'dir';
         return (
             <div>
@@ -87,7 +115,21 @@ export default class Directories extends React.Component {
                      }}>
                     {dirName}
                 </div>
-                <ul style={!directory.isOpen ? {display: 'none', margin: '0'} : {margin: '0'}}>
+                <ul
+                    style={
+                        !directory.isOpen ?
+                        {
+                            padding: '0 0 0 10',
+                            margin: '0',
+                            whiteSpace: 'nowrap',
+                            display: 'none'
+                        } :
+                        {
+                            padding: '0 0 0 10',
+                            margin: '0',
+                            whiteSpace: 'nowrap'
+                        }
+                    }>
                     {children}
                 </ul>
             </div>
@@ -103,15 +145,7 @@ export default class Directories extends React.Component {
         var {directoriesState, ...directoriesActions} = this.props;
         var rootDirectory = directoriesState.directories.find(directory => directory.id === 1);
         var rootDirectories = this.getChildren(rootDirectory);
-        var tree = rootDirectories.map((directory, index) => {
-            return (
-                <div key={index}>
-                    {
-                        this.renderDirectory(directory)
-                    }
-                </div>
-            )
-        });
+
         return (
             <div>
                 <div class="col-sm-4"
@@ -122,13 +156,17 @@ export default class Directories extends React.Component {
                                     this.props.openAddModal()
                                 }}
                                 class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus"></span>
+                            <span class="glyphicon glyphicon-plus"/>
                             <br />
                             Add
                         </button>
                         <button type="button"
-                                class={directoriesState.isEditActive ? "btn btn-default" : "btn btn-default disabled "}>
-                            <span class="glyphicon glyphicon-edit"></span>
+                                onClick={() => {
+                                    this.props.editDirectory(directoriesState.activeDirectory)
+                                }}
+                                class="btn btn-default"
+                                disabled={!directoriesState.isEditActive}>
+                            <span class="glyphicon glyphicon-edit"/>
                             <br />
                             Edit
                         </button>
@@ -136,19 +174,41 @@ export default class Directories extends React.Component {
                                 onClick={() => {
                                     this.props.deleteDirectory(directoriesState.activeDirectory)
                                 }}
-                                class={directoriesState.isDeleteActive ? "btn btn-default" : "btn btn-default disabled "}>
-                            <span class="glyphicon glyphicon-remove"></span>
+                                class="btn btn-default"
+                                disabled={!directoriesState.isEditActive}>
+                            <span class="glyphicon glyphicon-remove"/>
                             <br />
                             Remove
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-8">
-                    <div class="panel panel-default">
+                <div class="col-sm-8" style={{padding: 0}}>
+                    <div class="panel panel-default"
+                         style={
+                         {
+                             overflowY: 'auto',
+                             overflowX: 'auto',
+                             height: 500
+                         }}>
                         <div class="panel-body" style={{padding: '0'}}>
-                            <h4 onClick={() => {this.props.focusDirectory(rootDirectory)}}> &nbsp; /</h4>
+                            <h4
+                                onClick={() => {
+                                    this.props.focusDirectory(rootDirectory)
+                                }}
+                                onDoubleClick={() => {
+                                    this.props.openDirectory(rootDirectory)
+                                }}
+                            > &nbsp; /</h4>
                             {
-                                tree
+                                rootDirectories.map((directory, index) => {
+                                    return (
+                                        <div key={index}>
+                                            {
+                                                this.renderDirectory(directory)
+                                            }
+                                        </div>
+                                    )
+                                })
                             }
                         </div>
                     </div>

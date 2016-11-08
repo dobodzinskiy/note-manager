@@ -39,7 +39,7 @@ export function putDirectory(directory) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: './directories/' + directory.id,
-            data: directory,
+            data: JSON.stringify(directory),
             type: 'PUT',
             headers: {
                 "accept": "application/json",

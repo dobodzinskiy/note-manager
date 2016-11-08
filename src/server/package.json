@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "description": "Backend for React.js course",
   "scripts": {
-    "start": "node server.js",
-    "debug": "node server.js %NODE_DEBUG_OPTION% server.js"
+    "start": "node server.js"
   },
   "keywords": [
     "react",
