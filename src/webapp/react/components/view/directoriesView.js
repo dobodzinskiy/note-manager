@@ -46,8 +46,8 @@ class AddModal extends React.Component {
 
     }
 }
-export default class Directories extends React.Component {
 
+export default class Directories extends React.Component {
 
     renderDirectory(directory) {
         var children;
@@ -142,7 +142,7 @@ export default class Directories extends React.Component {
     };
 
     render() {
-        var {directoriesState, ...directoriesActions} = this.props;
+        var {directoriesState, ...actions} = this.props;
         var rootDirectory = directoriesState.directories.find(directory => directory.id === 1);
         var rootDirectories = this.getChildren(rootDirectory);
 

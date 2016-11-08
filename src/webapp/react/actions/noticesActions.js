@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 import * as api from '../api/noticesApi';
 import {showErrors} from './errorActions';
 
+
 export function getNotices() {
     return (dispatch) => {
         return api.getNotices().then(
@@ -16,7 +17,7 @@ export function getNotices() {
 
 export function createNotice(notice) {
     return (dispatch) => {
-        return api.createNotice(notice).then(
+        return api.postNotice(notice).then(
             data => dispatch({
                 type: types.CREATE_NOTICE,
                 notice: data
@@ -28,7 +29,7 @@ export function createNotice(notice) {
 
 export function changeNotice(notice) {
     return (dispatch) => {
-        return api.changeNotice(notice).then(
+        return api.putNotice(notice).then(
             data => dispatch({
                 type: types.CHANGE_NOTICE,
                 notice: data
@@ -83,11 +84,3 @@ export function openAddNoticeModal() {
         })
     }
 }
-
-// export function openNotice() {
-//     return (dispatch) => {
-//         dispatch({
-//             type: types.OPEN_NOTICE,
-//         })
-//     }
-// }

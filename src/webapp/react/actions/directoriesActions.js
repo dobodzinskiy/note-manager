@@ -3,11 +3,13 @@ import * as api from '../api/directoriesApi';
 import {showErrors} from './errorActions';
 import {hashHistory} from 'react-router';
 
-export function getDirectories() {
+//fetch directories and open tree by id from url
+export function getDirectories(id) {
     return (dispatch) => {
         return api.getDirectories().then(
             data => dispatch({
                 type: types.GET_DIRECTORIES,
+                id: id,
                 directories: data
             }),
             error => showErrors(error)

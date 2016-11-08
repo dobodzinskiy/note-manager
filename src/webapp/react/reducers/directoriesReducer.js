@@ -9,13 +9,19 @@ const initialState = {
     isOpenAddModal: false,
 };
 
-function createDirectories(directories) {
-    var directoriesArray = [];
-    directories.forEach((directory) => {
-        directory.isOpen = directory.id == 1;
-        directoriesArray.push(directory);
-    });
-    return directoriesArray;
+function createDirectories(directories, id) {
+    // var directoriesArray = [];
+    // directories.forEach((directory) => {
+    //     directory.isOpen = directory.id == 1;
+    //     directoriesArray.push(directory);
+    // });
+    // return directoriesArray;
+    var directory = directories.find(directory => directory.id == id);
+    directory.isOpen = true;
+    if (directory.parentId) {
+        createDirectories(directories, directory.parentId);
+    }
+    return directories;
 }
 
 function openDirectory(directory, directories) {
@@ -42,11 +48,12 @@ function changeDirectory(editedDirectory, directories) {
     });
     return newDirectories;
 }
+
 export default function (state = initialState, action) {
     switch (action.type) {
         case types.GET_DIRECTORIES:
             return Object.assign({}, state, {
-                directories: createDirectories(action.directories)
+                directories: createDirectories(action.directories, action.id)
             });
         case types.OPEN_DIRECTORY:
             return Object.assign({}, state, {

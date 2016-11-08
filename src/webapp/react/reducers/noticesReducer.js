@@ -49,7 +49,7 @@ export default function (state = initialState, action) {
             });
         case types.OPEN_ADD_NOTICE_MODAL:
             return Object.assign({}, state, {
-                isCreateModalOpen: true
+                isCreateModalOpen: !state.isCreateModalOpen
             });
         case types.FOCUS_NOTICE:
             return Object.assign({}, state, {
