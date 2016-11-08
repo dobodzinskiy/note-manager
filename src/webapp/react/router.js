@@ -7,9 +7,9 @@ import NotFound from './components/view/notFound';
 
 import Manager from './components/container/managerContainer';
 import Notice from './components/container/noticeContainer';
+import ChangeNotice from './components/container/changeNoticeContainer';
 
 
-// import ChangeNotice from './components/container/changeNoticeContainer';
 
 
 export default (
@@ -17,9 +17,10 @@ export default (
         <Route path='/' component={Layout}>
             <IndexRoute component={Index}/>
             <Route path='folder/:id' component={Manager}/>
-            <Route path='notice/:id' components={Notice}/>
+            <Route path='notice/:id' components={Notice}>
+                <Route path="change" component={ChangeNotice}/>
+            </Route>
             <Route path="*" component={NotFound} />
-            {/*<Route path='change/:id' component={ChangeNotice}/>*/}
         </Route>
     </Router>
 )

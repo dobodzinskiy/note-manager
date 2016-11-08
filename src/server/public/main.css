@@ -8,9 +8,26 @@
                                   not supported by any browser */
      /*height: 25px;*/
      cursor: hand;
+    white-space: nowrap;
  }
 .dirFocused {
     color: #2b669a;
+}
+.dirPanel {
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 500px
+}
+.openFolder {
+    padding: 0 0 0 10px;
+    margin: 0;
+    white-space: nowrap;
+}
+.closedFolder {
+    padding: 0 0 0 10px;
+    margin: 0;
+    white-space: nowrap;
+    display: none
 }
 ul {
     list-style-type: none;
@@ -28,4 +45,23 @@ ul {
 .noticeFocused {
     background: antiquewhite;
     border-radius: 5px;
+}
+.noticePanel {
+    margin-top: 5px;
+    margin-left:auto;
+    margin-right:auto;
+    width: 700px;
+}
+.noticeOption {
+    width: 30%;
+}
+.noticeTable {
+    border-top: none;
+}
+.description {
+    height: 300px;
+}
+.noticeEditInput {
+    border: none;
+    box-shadow: none;
 }

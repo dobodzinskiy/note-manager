@@ -1,22 +1,26 @@
 import React from 'react';
 import {Panel} from 'react-bootstrap';
 import {hashHistory} from 'react-router';
+import $ from 'jquery';
 
-class Tag extends React.Component {
-    render() {
-        var {tag} = this.props;
-        return (
-            <div class="col-sm-4">
-                <Panel bsStyle="primary">
-                    <h4>{tag}</h4>
-                </Panel>
-            </div>
-        )
-    }
-}
-export default class Notice extends React.Component {
+export default class ChangeNotice extends React.Component {
+
     componentDidMount() {
         this.props.getNotices();
+    }
+
+    submit(notice) {
+        var title = $("#title").val();
+        var description = $("#description").val();
+        var tags = $("#tags").val().split(";");
+        this.props.changeNotice({
+            id: notice.id,
+            directoryId: notice.directoryId,
+            position: notice.position,
+            title,
+            description,
+            tags
+        });
     }
 
     render() {
@@ -30,15 +34,6 @@ export default class Notice extends React.Component {
                 </div>
             )
         }
-        if (this.props.children) {
-            return (
-                <div>
-                    {
-                        this.props.children
-                    }
-                </div>
-            )
-        }
         return (
             <div class="noticePanel">
 
@@ -46,27 +41,20 @@ export default class Notice extends React.Component {
                     <button type="button"
                             class="btn btn-primary"
                             onClick={() => {
-                                hashHistory.replace('/folder/' + notice.directoryId);
+                                hashHistory.replace('/notice/' + notice.id);
                             }}>
                         <span class="glyphicon glyphicon-arrow-left"></span>Back
                     </button>
                     <button type="button"
                             class="btn btn-default"
                             onClick={() => {
-                                hashHistory.replace('/notice/' + notice.id + '/change')
+                                this.submit(notice);
+                                hashHistory.replace('/notice/' + notice.id);
                             }}>
-                        <span class="glyphicon glyphicon-edit"></span>Edit
-                    </button>
-                    <button type="button"
-                            class="btn btn-danger"
-                            onClick={() => {
-                                hashHistory.replace('/folder/' + notice.directoryId);
-                                this.props.deleteNotice(noticesState.activeNotice);
-                            }}>
-                        <span class="glyphicon glyphicon-remove"></span>Remove
+                        <span class="glyphicon glyphicon-edit"></span>Save
                     </button>
                 </div>
-                <br />
+                <br/>
 
                 <Panel style={{marginTop: 5}}>
                     <div class="col-sm-3">
@@ -74,7 +62,7 @@ export default class Notice extends React.Component {
                     </div>
                     <div class="col-sm-9">
                         <Panel bsStyle="primary">
-                            <h4>{notice.title}</h4>
+                            <input class="form-control noticeEditInput" id="title" defaultValue={notice.title}/>
                         </Panel>
                     </div>
                     <div class="col-sm-3">
@@ -82,22 +70,17 @@ export default class Notice extends React.Component {
                     </div>
                     <div class="col-sm-9">
                         <Panel bsStyle="primary" style={{height: 300}}>
-                            <h4>{notice.description}</h4>
+                            <textarea class="form-control noticeEditInput" rows="8" id="description"
+                                      defaultValue={notice.description}/>
                         </Panel>
                     </div>
                     <div class="col-sm-3">
                         <h3>Tags</h3>
                     </div>
                     <div class="col-sm-9">
-                        <div class="row">
-                            {
-                                notice.tags.map((tag, index) => {
-                                    return (
-                                        <Tag key={index} tag={tag}/>
-                                    )
-                                })
-                            }
-                        </div>
+                        <Panel bsStyle="primary">
+                            <input class="form-control noticeEditInput" id="tags" defaultValue={notice.tags.join(";")}/>
+                        </Panel>
                     </div>
                 </Panel>
             </div>

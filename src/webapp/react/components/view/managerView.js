@@ -5,14 +5,6 @@ import Notices from './noticesView';
 
 export default class NoticesLayout extends React.Component {
 
-    // openDirectories(id) {
-    //     var directory = this.props.directoriesState.directories.find(directory => directory.id == id);
-    //     directory.isOpen = true;
-    //     if (directory.parentId) {
-    //         this.openDirectories(directory.parentId)
-    //     }
-    // }
-
     componentDidMount() {
         this.props.getDirectories(this.props.params.id);
         this.props.getNotices();
@@ -20,7 +12,16 @@ export default class NoticesLayout extends React.Component {
 
     render() {
         var {noticesState, directoriesState, ...other} = this.props;
-        if (this.props.directoriesState.directories.length > 0) {
+        var {id} = this.props.params;
+        if (directoriesState.directories.length > 0) {
+            var directory = directoriesState.directories.find(directory => directory.id == id);
+            if (!directory) {
+                return(
+                    <div class="text-center">
+                        <h3> This folder doesn't exists. Sorry ;(</h3>
+                    </div>
+                )
+            }
             return (
                 <div class="row">
                     <div class="col-sm-4">
@@ -33,7 +34,8 @@ export default class NoticesLayout extends React.Component {
             )
         } else {
             return (
-                <div class="text-center">
+                <div class="container text-center">
+                    <h3> In progress, we have some troubles. Sorry ;(</h3>
                     <img src="./resources/spinner.gif"/>
                 </div>
             )
