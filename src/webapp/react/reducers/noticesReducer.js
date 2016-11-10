@@ -1,4 +1,5 @@
-import * as types from '../actions/actionTypes';
+import * as types from '../const/actionTypes';
+import * as searchTypes from '../const/searchTypes';
 
 const initialState = {
     notices: [],
@@ -6,7 +7,12 @@ const initialState = {
     editableNotice: {},
     isEditActive: false,
     isRemoveActive: false,
-    isCreateModalOpen: false
+    isCreateModalOpen: false,
+
+    searchWord: '',
+    searchType: null,
+    foundNotices: [],
+    isSearchModalOpen: false
 };
 function changeNotice(editedNotice, notices) {
     var newNotices = [];
@@ -19,6 +25,33 @@ function changeNotice(editedNotice, notices) {
     });
     return newNotices;
 }
+
+function searchNotices(searchType, searchWord, notices) {
+    var foundNotices = [];
+    switch (searchType) {
+        case searchTypes.SIMPLE_SEARCH:
+            notices.forEach((notice) => {
+                if (notice.title.includes(searchWord)) {
+                    foundNotices.push(notice);
+                }
+            });
+            return foundNotices;
+        case searchTypes.FULL_SEARCH:
+            notices.forEach((notice) => {
+                if (notice.title.includes(searchWord) ||
+                    notice.description.includes(searchWord) ||
+                    notice.tags.toString().includes(searchWord)) {
+
+                    foundNotices.push(notice);
+
+                }
+            });
+            return foundNotices;
+        default:
+            return foundNotices;
+    }
+}
+
 export default function (state = initialState, action) {
     switch (action.type) {
         case types.GET_NOTICES:
@@ -56,6 +89,24 @@ export default function (state = initialState, action) {
                 activeNotice: action.notice,
                 isEditActive: true,
                 isRemoveActive: true
+            });
+        case types.SET_SEARCH_WORD:
+            return Object.assign({}, state, {
+                searchWord: action.searchWord
+            });
+        case types.SEARCH_NOTICES:
+            return Object.assign({}, state, {
+                searchType: action.searchType,
+                foundNotices: searchNotices(action.searchType, state.searchWord, action.notices),
+                isSearchModalOpen: false
+            });
+        case types.OPEN_SEARCH_MODAL:
+            return Object.assign({}, state, {
+                isSearchModalOpen: !state.isSearchModalOpen
+            });
+        case types.SET_NOTICES:
+            return Object.assign({}, state, {
+                notices: action.notices
             });
         default:
             return state;

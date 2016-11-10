@@ -1,4 +1,4 @@
-import * as types from './actionTypes';
+import * as types from '../const/actionTypes';
 import * as api from '../api/directoriesApi';
 import {showErrors} from './errorActions';
 import {hashHistory} from 'react-router';

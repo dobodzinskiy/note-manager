@@ -8,6 +8,11 @@ export default class NoticesLayout extends React.Component {
     componentDidMount() {
         this.props.getDirectories(this.props.params.id);
         this.props.getNotices();
+        var {query} = this.props.location;
+        if (query.search) {
+            this.props.setSearchWord(query.word);
+            this.props.searchNotices(query.type);
+        }
     }
 
     render() {

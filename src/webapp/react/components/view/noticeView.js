@@ -21,6 +21,7 @@ export default class Notice extends React.Component {
 
     render() {
         var {id} = this.props.params;
+        var {query} = this.props.location;
         var {noticesState} = this.props;
         var notice = noticesState.notices.find(notice => notice.id == id);
         if (!notice) {
@@ -46,7 +47,11 @@ export default class Notice extends React.Component {
                     <button type="button"
                             class="btn btn-primary"
                             onClick={() => {
-                                hashHistory.replace('/folder/' + notice.directoryId);
+                                if (query.search) {
+                                    hashHistory.replace('/folder/' + notice.directoryId + '?search=1&word=' + noticesState.searchWord + '&type=' + noticesState.searchType);
+                                } else {
+                                    hashHistory.replace('/folder/' + notice.directoryId);
+                                }
                             }}>
                         <span class="glyphicon glyphicon-arrow-left"></span>Back
                     </button>

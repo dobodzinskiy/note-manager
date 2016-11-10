@@ -1,4 +1,4 @@
-import * as types from './actionTypes';
+import * as types from '../const/actionTypes';
 import * as api from '../api/noticesApi';
 import {showErrors} from './errorActions';
 
@@ -81,6 +81,45 @@ export function openAddNoticeModal() {
     return (dispatch) => {
         dispatch({
             type: types.OPEN_ADD_NOTICE_MODAL,
+        })
+    }
+}
+
+export function searchNotices(searchType) {
+    return (dispatch) => {
+        return api.getNotices().then(
+            data => dispatch({
+                searchType,
+                notices:data,
+                type: types.SEARCH_NOTICES
+            }),
+            error => showErrors(error)
+        )
+    }
+}
+
+export function setSearchWord(searchWord) {
+    return (dispatch) => {
+        dispatch({
+            searchWord,
+            type: types.SET_SEARCH_WORD
+        })
+    }
+}
+
+export function openSearchModal() {
+    return (dispatch) => {
+        dispatch({
+            type: types.OPEN_SEARCH_MODAL
+        })
+    }
+}
+
+export function setNotices(notices) {
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_NOTICES,
+            notices: notices
         })
     }
 }

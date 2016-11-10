@@ -8,8 +8,8 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
-                exclude: ['node_modules/'],
+                exclude: /(node_modules|bower_components)/,
+                test: /\.js$/,
                 loader: 'babel-loader',
                 query: {
                     presets: [
@@ -19,7 +19,8 @@ module.exports = {
                     plugins: [
                         'react-html-attrs',
                         'transform-class-properties',
-                        'transform-object-rest-spread'
+                        'transform-object-rest-spread',
+                        'transform-decorators-legacy'
                     ]
                 }
             }

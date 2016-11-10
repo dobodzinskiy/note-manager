@@ -29,7 +29,7 @@ var store = {
             title: 'Notice1',
             description: 'Just Example',
             tags: ['Example', 'React'],
-            position: 1
+            position: 0
         },
         {
             id: 2,
@@ -37,7 +37,15 @@ var store = {
             title: 'Notice2',
             description: 'Just second Example',
             tags: ['Example', 'React'],
-            position: 2
+            position: 1
+        },
+        {
+            id: 2,
+            directoryId: 2,
+            title: 'Notice2',
+            description: 'Just second Example',
+            tags: ['Example', 'React'],
+            position: 0
         }
     ]
 };

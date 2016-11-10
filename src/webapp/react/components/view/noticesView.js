@@ -1,7 +1,14 @@
 import React from 'react';
-import {Modal, Button, FormGroup, InputGroup, MenuItem, FormControl, DropdownButton} from 'react-bootstrap';
+import {Modal, Button, ButtonGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 import $ from 'jquery';
 import {hashHistory} from 'react-router';
+import update from 'react/lib/update';
+import HTML5Backend from 'react-dnd-html5-backend';
+import {DragDropContext, DragSource, DropTarget} from 'react-dnd';
+import {findDOMNode} from 'react-dom';
+
+import * as searchTypes from '../../const/searchTypes';
+import * as PropTypes from "react/lib/ReactPropTypes";
 
 class AddModal extends React.Component {
     submit() {
@@ -62,11 +69,144 @@ class AddModal extends React.Component {
     }
 }
 
-class Notice extends React.Component {
+class SearchModal extends React.Component {
+    submit(searchType) {
+        this.props.state.searchNotices(searchType);
+        hashHistory.replace('/folder/1?search=1&word=' + this.props.state.noticesState.searchWord + '&type=' + searchType);
+    }
 
     render() {
-        var {notice} = this.props;
         var {state} = this.props;
+        var {searchWord, notices, isSearchModalOpen} = state.noticesState;
+        var filteredNotices = notices.filter(notice => notice.title.includes(searchWord));
+        return (
+            <Modal show={isSearchModalOpen}
+                   onHide={state.openSearchModal}
+                   bsSize="small">
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        <span class="glyphicon glyphicon-search"/>
+                        &nbsp; Search notice
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Search..."
+                           value={searchWord}
+                           onChange={(e) => {
+                               state.setSearchWord(e.target.value);
+                           }}
+                           id="searchWord"/>
+                    <br/>
+                    <Panel style={{height: 200, overflowY: 'auto'}}>
+                        <ListGroup fill>
+                            {
+                                filteredNotices.map((notice) => {
+                                    return (
+                                        <ListGroupItem key={notice.id}
+                                                       onClick={()=> {
+                                                           state.setSearchWord(notice.title)
+                                                       }}>
+                                            {notice.title}
+                                        </ListGroupItem>
+                                    )
+                                })
+                            }
+                        </ListGroup>
+                    </Panel>
+                </Modal.Body>
+                <Modal.Footer>
+                    <ButtonGroup>
+                        <Button onClick={() => this.submit(searchTypes.SIMPLE_SEARCH)}>
+                            Search
+                        </Button>
+                        <Button onClick={() => this.submit(searchTypes.FULL_SEARCH)}>
+                            Full search
+                        </Button>
+                    </ButtonGroup>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+}
+
+const cardSource = {
+    beginDrag(props) {
+        return {
+            id: props.id,
+            index: props.index
+        };
+    }
+};
+
+const NOTICE = 'NOTICE';
+
+const cardTarget = {
+    hover(props, monitor, component) {
+        const dragIndex = monitor.getItem().index;
+        const hoverIndex = props.index;
+
+        // Don't replace items with themselves
+        if (dragIndex === hoverIndex) {
+            return;
+        }
+
+        // Determine rectangle on screen
+        const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+
+        // Get vertical middle
+        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset();
+
+        // Get pixels to the top
+        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+        // Only perform the move when the mouse has crossed half of the items height
+        // When dragging downwards, only move when the cursor is below 50%
+        // When dragging upwards, only move when the cursor is above 50%
+
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+            return;
+        }
+
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+            return;
+        }
+
+        // Time to actually perform the action
+        props.moveCard(dragIndex, hoverIndex);
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        monitor.getItem().index = hoverIndex;
+    }
+};
+
+@DropTarget(NOTICE, cardTarget, connect => ({
+    connectDropTarget: connect.dropTarget()
+}))
+@DragSource(NOTICE, cardSource, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+}))
+class Notice extends React.Component {
+
+    static propTypes = {
+        connectDragSource: PropTypes.func.isRequired,
+        connectDropTarget: PropTypes.func.isRequired,
+        isDragging: PropTypes.bool.isRequired,
+        moveCard: PropTypes.func.isRequired
+    };
+
+    render() {
+        var {notice, state, search} = this.props;
         var noticeClass = notice.id == state.noticesState.activeNotice.id ?
             'col-sm-3 text-center noticeFocused' :
             'col-sm-3 text-center notice';
@@ -99,27 +239,60 @@ class Notice extends React.Component {
             (
                 notice.title
             );
-        return (
+
+        const {text, isDragging, connectDragSource, connectDropTarget} = this.props;
+
+        return connectDragSource(connectDropTarget(
             <div class={noticeClass}
+                 style={isDragging ? {opacity: 0} : {opacity: 1}}
                  onClick={() => {
                      state.focusNotice(notice)
                  }}
                  onDoubleClick={() => {
                      state.focusNotice(notice);
-                     hashHistory.replace("/notice/" + notice.id);
+                     search ?
+                         hashHistory.replace("/notice/" + notice.id + '?search=1') :
+                         hashHistory.replace("/notice/" + notice.id);
                  }}>
                 <img src="./resources/Note.png" class="img-responsive margin"/>
                 <h4>{noticeName}</h4>
             </div>
-        )
+        ))
     }
 }
 
+@DragDropContext(HTML5Backend)
 export default class Notices extends React.Component {
+
+    moveCard(dragIndex, hoverIndex) {
+        var {id} = this.state.params;
+        const notices = this.state.noticesState.notices.filter(notice => notice.directoryId == id);
+        notices.sort((a, b) => a.position > b.position);
+        const dragCard = notices[dragIndex];
+
+        notices.splice(dragIndex, 1);               // removing what you are dragging.
+        notices.splice(hoverIndex, 0, dragCard);    // inserting it into hoverIndex.
+
+        notices.forEach((notice, index) => {
+            notice.position = index;
+        });
+
+        this.state.setNotices(notices);
+    }
+
     render() {
         var {id} = this.props.params;
+        var {query} = this.props.location;
         var {noticesState} = this.props;
-        var noticesFiltered = noticesState.notices.filter(notice => notice.directoryId == id);
+        var notices;
+
+        if  (query.search) {
+            notices = noticesState.foundNotices
+        } else {
+            notices = noticesState.notices.filter(notice => notice.directoryId == id);
+            notices.sort((a, b) => a.position > b.position);
+        }
+
         return (
             <div>
                 <div class="panel panel-default">
@@ -155,35 +328,47 @@ export default class Notices extends React.Component {
                                     </div>
                                 </td>
                                 <td>
-                                    <FormGroup>
-                                        <InputGroup>
-                                            <FormControl type="text"/>
-                                            <DropdownButton
-                                                componentClass={InputGroup.Button}
-                                                id="input-dropdown-addon"
-                                                title="Action">
-                                                <MenuItem key="1">Search in name</MenuItem>
-                                                <MenuItem key="2">Search everywhere</MenuItem>
-                                            </DropdownButton>
-                                        </InputGroup>
-                                    </FormGroup>
+                                    <button class="btn btn-primary"
+                                            onClick={()=> {
+                                                this.props.openSearchModal();
+                                            }}>
+                                        <span class="glyphicon glyphicon-search"/> Search
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                         {
-                            noticesFiltered.length > 0 ?
-                                noticesFiltered.map((notice, index) => {
-                                    return (
-                                        <div key={index}>
-                                            <Notice notice={notice} state={this.props}/>
-                                        </div>
-                                    )
-                                }) :
+                            notices.length > 0 ?
+                                query.search ?
+                                    <div>
+                                        <h2>Found notes with word "<strong>{noticesState.searchWord}</strong>":
+                                        </h2>
+                                        {
+                                            notices.map((notice, index) => {
+                                                return (
+                                                    <div key={index}>
+                                                        <Notice notice={notice} state={this.props}
+                                                                search={true}/>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    :
+                                    notices.map((notice, index) => {
+                                        return (
+                                            <div key={index}>
+                                                <Notice notice={notice} state={this.props} moveCard={this.moveCard}
+                                                        index={index}/>
+                                            </div>
+                                        )
+                                    }) :
                                 <h3>No notices here.</h3>
                         }
                     </div>
                 </div>
+                <SearchModal state={this.props}/>
                 <AddModal state={this.props}/>
             </div>
         )
