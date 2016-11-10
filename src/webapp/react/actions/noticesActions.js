@@ -10,7 +10,7 @@ export function getNotices() {
                 type: types.GET_NOTICES,
                 notices: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
     }
 }
@@ -34,7 +34,7 @@ export function changeNotice(notice) {
                 type: types.CHANGE_NOTICE,
                 notice: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
     }
 }
@@ -63,7 +63,7 @@ export function deleteNotice(notice) {
                 type: types.DELETE_NOTICE,
                 notice: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
     }
 }
@@ -93,7 +93,7 @@ export function searchNotices(searchType) {
                 notices: data,
                 type: types.SEARCH_NOTICES
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
     }
 }
@@ -122,7 +122,6 @@ export function updateNotices(notices) {
             noticePromises.push(api.putNotice(notice));
         });
         Promise.all(noticePromises).then(
-            // () => {dispatch(getNotices())}
             () => {
                 dispatch({
                     type: types.UPDATE_NOTICES,

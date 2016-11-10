@@ -12,7 +12,7 @@ export function getDirectories(id) {
                 id: id,
                 directories: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
     }
 }
@@ -24,11 +24,11 @@ export function createDirectory(directory) {
                 type: types.CREATE_DIRECTORY,
                 directory: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
     }
 }
-
+//inline editing
 export function editDirectory(directory) {
     return (dispatch) => {
         dispatch({
@@ -45,6 +45,7 @@ export function cancelEditDirectory() {
         })
     }
 }
+
 export function changeDirectory(directory) {
     return (dispatch) => {
         return api.putDirectory(directory).then(
@@ -52,7 +53,7 @@ export function changeDirectory(directory) {
                 type: types.CHANGE_DIRECTORY,
                 directory: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
 
     }
@@ -66,7 +67,7 @@ export function deleteDirectory(directory) {
                 type: types.DELETE_DIRECTORY,
                 directory: data
             }),
-            error => showErrors(error)
+            error => dispatch(showErrors(error))
         )
 
     }

@@ -9,7 +9,7 @@ export function getNotices() {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText));
+                reject(xhr);
             }
         })
     })
@@ -29,7 +29,7 @@ export function postNotice(notice) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -49,7 +49,7 @@ export function putNotice(notice) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -68,7 +68,7 @@ export function deleteNotice(notice) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })

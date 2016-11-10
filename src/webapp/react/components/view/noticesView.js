@@ -2,13 +2,11 @@ import React from 'react';
 import {Modal, Button, ButtonGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 import $ from 'jquery';
 import {hashHistory} from 'react-router';
-import update from 'react/lib/update';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {DragDropContext, DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
 
 import * as searchTypes from '../../const/searchTypes';
-import * as PropTypes from "react/lib/ReactPropTypes";
 
 class AddModal extends React.Component {
     submit() {
@@ -131,7 +129,7 @@ class SearchModal extends React.Component {
     }
 }
 
-const cardSource = {
+const NoticeSource = {
     beginDrag(props) {
         return {
             position: props.notice.position,
@@ -142,70 +140,47 @@ const cardSource = {
 
 const NOTICE = 'NOTICE';
 
-const cardTarget = {
+const NoticeTarget = {
     hover(props, monitor, component) {
-        // const dragIndex = monitor.getItem().position;
-        // const hoverIndex = props.notice.position;
+
         const dragIndex = monitor.getItem().index;
         const hoverIndex = props.index;
 
-        // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
             return;
         }
 
-        // Determine rectangle on screen
         const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
-        // Get vertical middle
         const hoverMiddleX = (hoverBoundingRect.left - hoverBoundingRect.right) / 2;
 
-        // Determine mouse position
         const clientOffset = monitor.getClientOffset();
 
-        // Get pixels to the top
         const hoverClientX = clientOffset.x - hoverBoundingRect.right;
 
-        // Only perform the move when the mouse has crossed half of the items height
-        // When dragging downwards, only move when the cursor is below 50%
-        // When dragging upwards, only move when the cursor is above 50%
 
-        // Dragging downwards
         if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
             return;
         }
 
-        // Dragging upwards
         if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
             return;
         }
 
-        // Time to actually perform the action
-        props.moveCard(dragIndex, hoverIndex);
+        props.moveNotice(dragIndex, hoverIndex);
 
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
         monitor.getItem().index = hoverIndex;
     }
 };
 
-@DropTarget(NOTICE, cardTarget, connect => ({
+@DropTarget(NOTICE, NoticeTarget, connect => ({
     connectDropTarget: connect.dropTarget()
 }))
-@DragSource(NOTICE, cardSource, (connect, monitor) => ({
+@DragSource(NOTICE, NoticeSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
 }))
 class Notice extends React.Component {
-
-    // static propTypes = {
-    //     connectDragSource: PropTypes.func.isRequired,
-    //     connectDropTarget: PropTypes.func.isRequired,
-    //     isDragging: PropTypes.bool.isRequired,
-    //     moveCard: PropTypes.func.isRequired
-    // };
 
     render() {
         var {notice, state, search} = this.props;
@@ -242,7 +217,7 @@ class Notice extends React.Component {
                 notice.title
             );
 
-        const {text, isDragging, connectDragSource, connectDropTarget} = this.props;
+        const {isDragging, connectDragSource, connectDropTarget} = this.props;
 
         return connectDragSource(connectDropTarget(
             <div class={noticeClass}
@@ -266,14 +241,14 @@ class Notice extends React.Component {
 @DragDropContext(HTML5Backend)
 export default class Notices extends React.Component {
 
-    moveCard(dragIndex, hoverIndex) {
+    moveNotice(dragIndex, hoverIndex) {
         var {id} = this.state.params;
         const notices = this.state.noticesState.notices.filter(notice => notice.directoryId == id);
         notices.sort((a, b) => a.position > b.position);
-        const dragCard = notices[dragIndex];
+        const dragNotice = notices[dragIndex];
 
         notices.splice(dragIndex, 1);               // removing what you are dragging.
-        notices.splice(hoverIndex, 0, dragCard);    // inserting it into hoverIndex.
+        notices.splice(hoverIndex, 0, dragNotice);    // inserting it into hoverIndex.
 
         notices.forEach((notice, index) => {
             notice.position = index;
@@ -361,7 +336,7 @@ export default class Notices extends React.Component {
                                     notices.map((notice, index) => {
                                         return (
                                             <div key={index}>
-                                                <Notice notice={notice} state={this.props} moveCard={this.moveCard} index={index}/>
+                                                <Notice notice={notice} state={this.props} moveNotice={this.moveNotice} index={index}/>
                                             </div>
                                         )
                                     }) :

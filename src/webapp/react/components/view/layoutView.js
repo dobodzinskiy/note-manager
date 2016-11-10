@@ -25,9 +25,12 @@ export default class Layout extends React.Component {
                         <Modal.Title> ERROR </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h1>Error # {errorsState.error.number}</h1>
-                        <p> {errorsState.error.text} </p>
+                        <h1>Error # {errorsState.error.status} !</h1>
+                        <h4><strong>Description:</strong> {errorsState.error.responseText} </h4>
                     </Modal.Body>
+                    <Modal.Footer>
+                        <button class="btn btn-danger" onClick={this.props.hideErrors}>Close</button>
+                    </Modal.Footer>
                 </Modal>
             </div>
         )

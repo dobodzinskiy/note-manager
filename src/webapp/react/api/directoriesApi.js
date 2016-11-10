@@ -9,7 +9,7 @@ export function getDirectories() {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText));
+                reject(xhr);
             }
         })
     })
@@ -29,7 +29,7 @@ export function postDirectory(directory) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -49,7 +49,7 @@ export function putDirectory(directory) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -68,7 +68,7 @@ export function deleteDirectory(directory) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })

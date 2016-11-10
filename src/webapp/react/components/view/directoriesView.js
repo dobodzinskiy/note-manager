@@ -167,7 +167,7 @@ export default class Directories extends React.Component {
                                 Edit
                             </button>
                         </OverlayTrigger>
-                        <OverlayTrigger placement="left" overlay={tooltipDelete}>
+                        <OverlayTrigger placement="right" overlay={tooltipDelete}>
                             <button type="button"
                                     onClick={() => {
                                         this.props.deleteDirectory(directoriesState.activeDirectory)
