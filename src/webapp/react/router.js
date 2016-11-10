@@ -1,16 +1,13 @@
 import {Router, Route, IndexRoute} from 'react-router';
 import React from 'react';
 
-import Layout from './components/view/layoutView';
+import Layout from './components/container/layoutContainer';
 import Index from './components/view/index';
 import NotFound from './components/view/notFound';
 
 import Manager from './components/container/managerContainer';
 import Notice from './components/container/noticeContainer';
 import ChangeNotice from './components/container/changeNoticeContainer';
-
-
-
 
 export default (
     <Router>

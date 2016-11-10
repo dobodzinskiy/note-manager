@@ -40,7 +40,7 @@ var store = {
             position: 1
         },
         {
-            id: 2,
+            id: 3,
             directoryId: 2,
             title: 'Notice2',
             description: 'Just second Example',

@@ -26,6 +26,16 @@ function changeNotice(editedNotice, notices) {
     return newNotices;
 }
 
+function updateNotices(notices, allNotices) {
+    var newNotices = allNotices;
+    notices.forEach((notice) => {
+        var newNotice = newNotices.find(oldNotice => notice.id == oldNotice.id);
+        if (newNotice) {
+            newNotice.position = notice.position;
+        }
+    });
+    return newNotices;
+}
 function searchNotices(searchType, searchWord, notices) {
     var foundNotices = [];
     switch (searchType) {
@@ -51,7 +61,6 @@ function searchNotices(searchType, searchWord, notices) {
             return foundNotices;
     }
 }
-
 export default function (state = initialState, action) {
     switch (action.type) {
         case types.GET_NOTICES:
@@ -104,9 +113,9 @@ export default function (state = initialState, action) {
             return Object.assign({}, state, {
                 isSearchModalOpen: !state.isSearchModalOpen
             });
-        case types.SET_NOTICES:
+        case types.UPDATE_NOTICES:
             return Object.assign({}, state, {
-                notices: action.notices
+                notices: updateNotices(action.notices, state.notices)
             });
         default:
             return state;

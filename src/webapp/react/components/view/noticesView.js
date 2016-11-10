@@ -134,7 +134,7 @@ class SearchModal extends React.Component {
 const cardSource = {
     beginDrag(props) {
         return {
-            id: props.id,
+            position: props.notice.position,
             index: props.index
         };
     }
@@ -144,6 +144,8 @@ const NOTICE = 'NOTICE';
 
 const cardTarget = {
     hover(props, monitor, component) {
+        // const dragIndex = monitor.getItem().position;
+        // const hoverIndex = props.notice.position;
         const dragIndex = monitor.getItem().index;
         const hoverIndex = props.index;
 
@@ -156,25 +158,25 @@ const cardTarget = {
         const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
         // Get vertical middle
-        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+        const hoverMiddleX = (hoverBoundingRect.left - hoverBoundingRect.right) / 2;
 
         // Determine mouse position
         const clientOffset = monitor.getClientOffset();
 
         // Get pixels to the top
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+        const hoverClientX = clientOffset.x - hoverBoundingRect.right;
 
         // Only perform the move when the mouse has crossed half of the items height
         // When dragging downwards, only move when the cursor is below 50%
         // When dragging upwards, only move when the cursor is above 50%
 
         // Dragging downwards
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
             return;
         }
 
         // Dragging upwards
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
             return;
         }
 
@@ -198,12 +200,12 @@ const cardTarget = {
 }))
 class Notice extends React.Component {
 
-    static propTypes = {
-        connectDragSource: PropTypes.func.isRequired,
-        connectDropTarget: PropTypes.func.isRequired,
-        isDragging: PropTypes.bool.isRequired,
-        moveCard: PropTypes.func.isRequired
-    };
+    // static propTypes = {
+    //     connectDragSource: PropTypes.func.isRequired,
+    //     connectDropTarget: PropTypes.func.isRequired,
+    //     isDragging: PropTypes.bool.isRequired,
+    //     moveCard: PropTypes.func.isRequired
+    // };
 
     render() {
         var {notice, state, search} = this.props;
@@ -277,7 +279,7 @@ export default class Notices extends React.Component {
             notice.position = index;
         });
 
-        this.state.setNotices(notices);
+        this.state.updateNotices(notices);
     }
 
     render() {
@@ -359,8 +361,7 @@ export default class Notices extends React.Component {
                                     notices.map((notice, index) => {
                                         return (
                                             <div key={index}>
-                                                <Notice notice={notice} state={this.props} moveCard={this.moveCard}
-                                                        index={index}/>
+                                                <Notice notice={notice} state={this.props} moveCard={this.moveCard} index={index}/>
                                             </div>
                                         )
                                     }) :

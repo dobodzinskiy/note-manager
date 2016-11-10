@@ -90,7 +90,7 @@ export function searchNotices(searchType) {
         return api.getNotices().then(
             data => dispatch({
                 searchType,
-                notices:data,
+                notices: data,
                 type: types.SEARCH_NOTICES
             }),
             error => showErrors(error)
@@ -115,11 +115,20 @@ export function openSearchModal() {
     }
 }
 
-export function setNotices(notices) {
+export function updateNotices(notices) {
     return (dispatch) => {
-        dispatch({
-            type: types.SET_NOTICES,
-            notices: notices
-        })
+        var noticePromises = [];
+        notices.forEach((notice) => {
+            noticePromises.push(api.putNotice(notice));
+        });
+        Promise.all(noticePromises).then(
+            // () => {dispatch(getNotices())}
+            () => {
+                dispatch({
+                    type: types.UPDATE_NOTICES,
+                    notices
+                })
+            }
+        )
     }
 }
