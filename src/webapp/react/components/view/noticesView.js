@@ -41,13 +41,15 @@ class AddModal extends React.Component {
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="title">Title:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="title" placeholder="Enter title"/>
+                                <input type="text" class="form-control" id="title" placeholder="Enter title"
+                                       maxLength="20" required="required"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="description">Description:</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" rows="5" id="description" placeholder="Description"/>
+                                <textarea class="form-control" rows="5" id="description" placeholder="Description"
+                                          required="required"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -66,7 +68,6 @@ class AddModal extends React.Component {
         )
     }
 }
-
 class SearchModal extends React.Component {
     submit(searchType) {
         this.props.state.searchNotices(searchType);
@@ -189,11 +190,12 @@ class Notice extends React.Component {
             'col-sm-3 text-center notice';
         var noticeName = notice.id == state.noticesState.editableNotice.id ?
             (
-                <div>
+                <h4>
                     <form class="form-inline" style={{margin: 0}}>
                         <div class="form-group">
                             <input type="text" class="form-control form-input-sm" id="title" name="title"
-                                   placeholder={state.noticesState.editableNotice.title}/>
+                                   placeholder={state.noticesState.editableNotice.title} maxLength="20"
+                                   required="required"/>
                             &nbsp;<span class="glyphicon glyphicon-ok"
                                         onClick={() => {
                                             state.changeNotice({
@@ -211,10 +213,12 @@ class Notice extends React.Component {
                                         }}/>
                         </div>
                     </form>
-                </div>
+                </h4>
             ) :
             (
-                notice.title
+                <h4 class="noticeName">
+                    {notice.title}
+                </h4>
             );
 
         const {isDragging, connectDragSource, connectDropTarget} = this.props;
@@ -232,7 +236,7 @@ class Notice extends React.Component {
                          hashHistory.replace("/notice/" + notice.id);
                  }}>
                 <img src="./resources/Note.png" class="img-responsive margin"/>
-                <h4>{noticeName}</h4>
+                <div>{noticeName}</div>
             </div>
         ))
     }
@@ -263,7 +267,7 @@ export default class Notices extends React.Component {
         var {noticesState} = this.props;
         var notices;
 
-        if  (query.search) {
+        if (query.search) {
             notices = noticesState.foundNotices
         } else {
             notices = noticesState.notices.filter(notice => notice.directoryId == id);
@@ -336,7 +340,8 @@ export default class Notices extends React.Component {
                                     notices.map((notice, index) => {
                                         return (
                                             <div key={index}>
-                                                <Notice notice={notice} state={this.props} moveNotice={this.moveNotice} index={index}/>
+                                                <Notice notice={notice} state={this.props} moveNotice={this.moveNotice}
+                                                        index={index}/>
                                             </div>
                                         )
                                     }) :

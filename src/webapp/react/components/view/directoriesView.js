@@ -33,7 +33,7 @@ class AddModal extends React.Component {
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="directory">Name:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="directory" placeholder="Enter name"/>
+                                <input type="text" class="form-control" id="directory" placeholder="Enter name" maxLength="20" required="required"/>
                             </div>
                         </div>
                     </Modal.Body>
@@ -70,7 +70,7 @@ export default class Directories extends React.Component {
                         <div class="form-group">
                             <label for="folder"><span class="glyphicon glyphicon-folder-close btn-lg"/></label>
                             <input type="text" class="form-control form-input-sm" id="folder" name="folder"
-                                   placeholder={this.props.directoriesState.editableDirectory.name}/>
+                                   placeholder={this.props.directoriesState.editableDirectory.name} maxLength="20" required="required"/>
                             &nbsp;<span class="glyphicon glyphicon-ok"
                                         onClick={() => {
                                             this.props.changeDirectory({

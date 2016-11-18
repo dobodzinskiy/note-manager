@@ -62,7 +62,7 @@ export default class ChangeNotice extends React.Component {
                     </div>
                     <div class="col-sm-9">
                         <Panel bsStyle="primary">
-                            <input class="form-control noticeEditInput" id="title" defaultValue={notice.title}/>
+                            <input class="form-control noticeEditInput" id="title" defaultValue={notice.title} maxLength="20" required="required"/>
                         </Panel>
                     </div>
                     <div class="col-sm-3">
@@ -71,7 +71,7 @@ export default class ChangeNotice extends React.Component {
                     <div class="col-sm-9">
                         <Panel bsStyle="primary" style={{height: 300}}>
                             <textarea class="form-control noticeEditInput" rows="8" id="description"
-                                      defaultValue={notice.description}/>
+                                      defaultValue={notice.description} required="required"/>
                         </Panel>
                     </div>
                     <div class="col-sm-3">

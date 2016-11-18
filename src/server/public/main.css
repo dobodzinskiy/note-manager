@@ -46,12 +46,14 @@ ul {
     background: antiquewhite;
     border-radius: 5px;
 }
+
 .noticePanel {
     margin-top: 5px;
     margin-left:auto;
     margin-right:auto;
     width: 700px;
 }
+
 .noticeOption {
     width: 30%;
 }
@@ -64,4 +66,13 @@ ul {
 .noticeEditInput {
     border: none;
     box-shadow: none;
+}
+
+.noticeName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.noticeDescription {
+    word-wrap: break-word;
 }

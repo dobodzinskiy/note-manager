@@ -79,7 +79,7 @@ export default class Notice extends React.Component {
                     </div>
                     <div class="col-sm-9">
                         <Panel bsStyle="primary">
-                            <h4>{notice.title}</h4>
+                            <h4 class="noticeName">{notice.title}</h4>
                         </Panel>
                     </div>
                     <div class="col-sm-3">
@@ -87,7 +87,7 @@ export default class Notice extends React.Component {
                     </div>
                     <div class="col-sm-9">
                         <Panel bsStyle="primary" style={{height: 300}}>
-                            <h4>{notice.description}</h4>
+                            <h4 class="noticeDescription">{notice.description}</h4>
                         </Panel>
                     </div>
                     <div class="col-sm-3">
