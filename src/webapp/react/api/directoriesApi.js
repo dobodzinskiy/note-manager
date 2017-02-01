@@ -3,13 +3,13 @@ import $ from 'jquery';
 export function getDirectories() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/directories',
+            url: './directories',
             type: 'GET',
             success: (data) => {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText));
+                reject(xhr);
             }
         })
     })
@@ -18,8 +18,8 @@ export function getDirectories() {
 export function postDirectory(directory) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/directories',
-            data: directory,
+            url: './directories/',
+            data: JSON.stringify(directory),
             type: 'POST',
             headers: {
                 "accept": "application/json",
@@ -29,7 +29,7 @@ export function postDirectory(directory) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -39,7 +39,7 @@ export function putDirectory(directory) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: './directories/' + directory.id,
-            data: directory,
+            data: JSON.stringify(directory),
             type: 'PUT',
             headers: {
                 "accept": "application/json",
@@ -49,7 +49,7 @@ export function putDirectory(directory) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -68,7 +68,7 @@ export function deleteDirectory(directory) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })

@@ -9,17 +9,17 @@ export function getNotices() {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText));
+                reject(xhr);
             }
         })
     })
 }
 
-export function postNotices(notice) {
+export function postNotice(notice) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '/notices',
-            data: notice,
+            data: JSON.stringify(notice),
             type: 'POST',
             headers: {
                 "accept": "application/json",
@@ -29,7 +29,7 @@ export function postNotices(notice) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -38,8 +38,8 @@ export function postNotices(notice) {
 export function putNotice(notice) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: './notice/' + notice.id,
-            data: notice,
+            url: './notices/' + notice.id,
+            data: JSON.stringify(notice),
             type: 'PUT',
             headers: {
                 "accept": "application/json",
@@ -49,7 +49,7 @@ export function putNotice(notice) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })
@@ -58,7 +58,7 @@ export function putNotice(notice) {
 export function deleteNotice(notice) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/notices/' + notices.id,
+            url: '/notices/' + notice.id,
             type: 'DELETE',
             headers: {
                 "accept": "application/json",
@@ -68,7 +68,7 @@ export function deleteNotice(notice) {
                 resolve(data);
             },
             error: (xhr) => {
-                reject(JSON.parse(xhr.responseText))
+                reject(xhr)
             }
         })
     })

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "webpack",
+    "build-dev": "webpack --watch -d",
     "build-prod": "webpack -p"
   },
   "keywords": [
@@ -15,22 +15,27 @@
   "author": "DenisObodzinskiy (dobodzinskiy@dataart.com)",
   "license": "ISC",
   "dependencies": {
-    "babel-core": "^6.9.1",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-react-html-attrs": "^2.0.0",
-    "babel-plugin-syntax-exponentiation-operator": "^6.8.0",
-    "babel-plugin-transform-class-properties": "^6.9.1",
+    "babel-core": "6.9.1",
+    "babel-loader": "6.x",
+    "babel-plugin-add-module-exports": "0.x",
+    "babel-plugin-react-html-attrs": "2.x",
+    "babel-plugin-syntax-exponentiation-operator": "6.x",
+    "babel-plugin-transform-class-properties": "6.x",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
+    "babel-plugin-transform-decorators-legacy": "x",
     "babel-preset-es2016": "6.0.11",
-    "babel-preset-react": "^6.5.0",
-    "jquery": "^2.2.4",
-    "react": "15.1.0",
-    "react-bootstrap": "0.29.4",
-    "react-dom": "^15.2.0",
-    "react-redux": "^4.4.5",
-    "react-router": "^2.5.2",
-    "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0",
-    "webpack": "^1.13.1"
-  }
+    "babel-preset-react": "6.x",
+    "jquery": "2.x",
+    "react": "15.x",
+    "react-bootstrap": "0.x",
+    "react-dnd": "^2.1.4",
+    "react-dnd-html5-backend": "^2.1.2",
+    "react-dom": "15.x",
+    "react-redux": "4.x",
+    "react-router": "2.x",
+    "redux": "3.x",
+    "redux-thunk": "2.x",
+    "webpack": "1.x"
+  },
+  "devDependencies": {}
 }
